@@ -30,6 +30,10 @@ io.on('connection', socket => {
       message: `Welcome to the chat, ${malikLog[socket.id]}`,
     });
   });
+
+  socket.on('disconnect', () => {
+    console.log(`User left`);
+  });
 });
 
 // middleware
