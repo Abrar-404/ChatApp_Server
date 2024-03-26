@@ -25,11 +25,17 @@ io.on('connection', socket => {
       malik: 'Admin',
       message: `${malikLog[socket.id]} has joined`,
     });
+
+
     socket.emit('welcome', {
       malik: 'Admin',
       message: `Welcome to the chat, ${malikLog[socket.id]}`,
     });
   });
+
+  socket.on('message', ({message, id}) => {
+  io.emit(`sendMessage`, {malik: malikLog[id], message, id})
+})
 
   socket.on('disconnect', () => {
     socket.broadcast.emit('leave', {
@@ -62,6 +68,7 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
+
 
 async function run() {
   try {
