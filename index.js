@@ -22,11 +22,14 @@ io.on('connection', (socket) => {
   socket.on('joined', ({ malik }) => {
     malikLog[socket.id] = malik;
     console.log(`${malik} has joined`);
+    socket.broadcast.emit('userJoined', {
+      malik: 'Admin',
+      message: `${malikLog[socket.id]} has joined`,
+    });
   })
 
 
   socket.emit('welcome', { malik: 'Admin', message: `Welcome to the chat` })
-  socket.broadcast.emit('userJoined', {malik: "Admin", message: `User has joined`})
 
 });
 
