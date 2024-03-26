@@ -25,7 +25,8 @@ io.on('connection', (socket) => {
   })
 
 
-  socket.emit('welcome', {malik: 'Admin', message: `Welcome to the chat`})
+  socket.emit('welcome', { malik: 'Admin', message: `Welcome to the chat` })
+  socket.broadcast.emit('userJoined', {malik: "Admin", message: `User has joined`})
 
 });
 
