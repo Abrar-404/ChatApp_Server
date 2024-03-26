@@ -1,6 +1,6 @@
 const express = require('express');
-const users = require('./User')
 const cors = require('cors');
+const http = require('http');
 require('dotenv').config();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cookieParser = require('cookie-parser');
@@ -34,19 +34,9 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    const chatCollection = client.db('dummyChat').collection('chat');
 
-    app.get('/chat', async (req, res) => {
-      const result = await chatCollection.find().toArray();
-      res.send(result);
-    });
 
-    app.get('/chat/:id', async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
-      const result = await chatCollection.findOne(query);
-      res.send(result);
-    });
+
 
     await client.db('admin').command({ ping: 1 });
     console.log(
@@ -60,6 +50,8 @@ run().catch(console.dir);
 app.get('/', (req, res) => {
   res.send('chatting is on');
 });
+
+
 
 app.listen(port, () => {
   console.log(`Port is running on: ${port}`);
