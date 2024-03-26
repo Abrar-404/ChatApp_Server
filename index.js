@@ -1,4 +1,5 @@
 const express = require('express');
+const users = require('./User')
 const cors = require('cors');
 require('dotenv').config();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
@@ -20,7 +21,6 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-const users = require('./User')
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.eted0lc.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -58,7 +58,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get('/', (req, res) => {
-  res.send('Gaming is on');
+  res.send('chatting is on');
 });
 
 app.listen(port, () => {
