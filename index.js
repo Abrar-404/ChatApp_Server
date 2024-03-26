@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const http = require('http');
-const socketIO = require('socket.io')
+const socketIO = require('socket.io');
 require('dotenv').config();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cookieParser = require('cookie-parser');
@@ -9,13 +9,17 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const port = process.env.PORT || 5000;
 
-const server = http.createServer(app)
+const server = http.createServer(app);
 
-const io = socketIO(server)
+const io = socketIO(server);
 
-io.on("connection", () => {
+io.on('connection', (socket) => {
   console.log('new connection');
-})
+
+  socket.on('joined', ({ malik }) => {
+    console.log(`${malik} has joined`);
+  });
+});
 
 // middleware
 app.use(
@@ -30,7 +34,6 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.eted0lc.mongodb.net/?retryWrites=true&w=majority`;
 
 const client = new MongoClient(uri, {
@@ -43,10 +46,6 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-
-
-
-
     await client.db('admin').command({ ping: 1 });
     console.log(
       'Pinged your deployment. You successfully connected to MongoDB!'
@@ -59,8 +58,6 @@ run().catch(console.dir);
 app.get('/', (req, res) => {
   res.send('chatting is on');
 });
-
-
 
 server.listen(port, () => {
   console.log(`Port is running on: ${port}`);
