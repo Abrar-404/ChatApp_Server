@@ -9,14 +9,13 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const port = process.env.PORT || 5000;
 
-
-const malikLog = [{}]
+const malikLog = [{}];
 
 const server = http.createServer(app);
 
 const io = socketIO(server);
 
-io.on('connection', (socket) => {
+io.on('connection', socket => {
   console.log('new connection');
 
   socket.on('joined', ({ malik }) => {
@@ -26,11 +25,11 @@ io.on('connection', (socket) => {
       malik: 'Admin',
       message: `${malikLog[socket.id]} has joined`,
     });
-  })
-
-
-  socket.emit('welcome', { malik: 'Admin', message: `Welcome to the chat` })
-
+    socket.emit('welcome', {
+      malik: 'Admin',
+      message: `Welcome to the chat, ${malikLog[socket.id]}`,
+    });
+  });
 });
 
 // middleware
