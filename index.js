@@ -32,6 +32,10 @@ io.on('connection', socket => {
   });
 
   socket.on('disconnect', () => {
+    socket.broadcast.emit('leave', {
+      malik: 'Admin',
+      message: ` ${malikLog[socket.id]} has left the chat`,
+    });
     console.log(`User left`);
   });
 });
