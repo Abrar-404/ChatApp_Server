@@ -9,7 +9,9 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const port = process.env.PORT || 5000;
 
-const server  = http.createServer(app)
+const server = http.createServer(app)
+
+const io = socketIO(server)
 
 // middleware
 app.use(
@@ -56,6 +58,6 @@ app.get('/', (req, res) => {
 
 
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Port is running on: ${port}`);
 });
