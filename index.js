@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId} = require('mongodb');
 const cookieParser = require('cookie-parser');
 const app = express();
 const port = process.env.PORT || 5000;
@@ -9,10 +9,7 @@ const port = process.env.PORT || 5000;
 // middleware
 app.use(
   cors({
-    origin: [
-      'http://localhost:5173',
-      'http://localhost:5000',
-    ],
+    origin: ['http://localhost:5173', 'http://localhost:5000'],
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     optionsSuccessStatus: 204,
@@ -36,19 +33,18 @@ async function run() {
   try {
     const chatCollection = client.db('dummyChat').collection('chat');
 
-
     app.get('/chat', async (req, res) => {
       const result = await chatCollection.find().toArray();
       res.send(result);
     });
 
-    
-    app.get('/featureCards/:id', async (req, res) => {
+    app.get('/chat/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
-      const result = await featureCardCollection.findOne(query);
+      const result = await chatCollection.findOne(query);
       res.send(result);
-    });
+    })
+
 
     await client.db('admin').command({ ping: 1 });
     console.log(
@@ -66,5 +62,3 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Port is running on: ${port}`);
 });
-
-
