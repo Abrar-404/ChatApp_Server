@@ -13,6 +13,10 @@ const server = http.createServer(app)
 
 const io = socketIO(server)
 
+io.on("connection", () => {
+  console.log('new connection');
+})
+
 // middleware
 app.use(
   cors({
