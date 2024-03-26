@@ -1,8 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const { MongoClient, ServerApiVersion, ObjectId} = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cookieParser = require('cookie-parser');
+const mongoose = require('mongoose');
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -18,6 +19,27 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+
+const userSchema = mongoose.schema({
+  fullName: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  token: {
+    type: String,
+  },
+});
+
+const Users = mongoose.model('Users', userSchema);
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.eted0lc.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -43,8 +65,7 @@ async function run() {
       const query = { _id: new ObjectId(id) };
       const result = await chatCollection.findOne(query);
       res.send(result);
-    })
-
+    });
 
     await client.db('admin').command({ ping: 1 });
     console.log(
