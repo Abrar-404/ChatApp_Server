@@ -1,12 +1,15 @@
 const express = require('express');
 const cors = require('cors');
 const http = require('http');
+const socketIO = require('socket.io')
 require('dotenv').config();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cookieParser = require('cookie-parser');
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+const server  = http.createServer(app)
 
 // middleware
 app.use(
