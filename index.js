@@ -34,8 +34,13 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
+    const chatCollection = client.db('dummyChat').collection('chat');
 
-    
+
+    app.get('/chat', async (req, res) => {
+      const result = await chatCollection.find().toArray();
+      res.send(result);
+    });
 
     await client.db('admin').command({ ping: 1 });
     console.log(
