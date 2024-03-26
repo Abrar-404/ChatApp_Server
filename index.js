@@ -9,6 +9,9 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const port = process.env.PORT || 5000;
 
+
+const malikLog = [{}]
+
 const server = http.createServer(app);
 
 const io = socketIO(server);
@@ -17,8 +20,13 @@ io.on('connection', (socket) => {
   console.log('new connection');
 
   socket.on('joined', ({ malik }) => {
+    malikLog[socket.id] = malik;
     console.log(`${malik} has joined`);
-  });
+  })
+
+
+  socket.emit('welcome', {malik: 'Admin', message: `Welcome to the chat`})
+
 });
 
 // middleware
